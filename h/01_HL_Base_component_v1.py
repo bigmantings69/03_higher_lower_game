@@ -1,54 +1,85 @@
 # HL component 1 - Get (and check) user input
 
-# To Do
-# Check a lowest in an integer (any integer)
-# Check that highest is more than lowest (lowest bound only)
-# Check that rounds is more than 1 (upper bound only)
-# Check that guess is between lowest and highest 
-# lowe and upper bound
+# Ask user if they have played before.
 
 
-# Number checking function goes here
-def int_check(question, low=None, high=None):
+def instructions():
+    print()
+    print("**** How to Play ****")
+    print()
+    print("For each game you will be asked to...")
+    print("-Enter a 'low' and 'high' number. The computer will randomly "
+    "generate a  'secret' number between your two chosen numbers. It will use "
+    "these numbers for for all the rounds in a given game.")
+    print("- The computer will calculate how many guesses you are allowed")
+    print("- enter the number of rounds you want to play")
+    print("- guess the secret number")
+    print()
+    print("Good Luck!")
 
-    situation = ""
+# If 'yes', show instructions
 
-    if low is not None and high is not None:
-        situation = "both"
-    elif low is not None and high is None:
-        situation = "low only"
 
-    while True:
+def statement_generator(statement, decoration):
 
-        try:
-            response = int(input(question))
+    sides = decoration * 3
 
-            # check input is not too high or low
-            # if a both upper and lower bounds
-            # are specified
-            if situation == "both":
-                if response < low or response > high:
-                    print("PLease enter a number between
-                        {} and {}".format (low, high))
-                    continue
+    statement = "{} {} {}".format(sides, statement, sides)
+    top_bottom = decoration * len(statement)
 
-            # checks input is not too low
-            elif situation == "low only":
-                if response < low:
-                    print("Please enter a number that is more
-                        than (or equal to) {}".format(low))
-                    continue
+    print(top_bottom)
+    print(statement)
+    print(top_bottom)
 
+    return ""
+
+
+def yes_no(question):
+    valid = False
+    while not valid:
+        response = input(question).lower()
+
+        if response == "yes" or response == "y":
+            response = "yes"
             return response
 
-        # checks input is a integer
-        expect ValueError:
-           print ("Please enter an integer")
-           continue         
+        elif response == "no" or response == "n":
+            response = "no"
+            return response
 
-3 Main routine
+        else:
+            print("please enter yes or no")
 
-lowest = int_check("Low Number:")
-highest = int_check("High Number:", lowest + 1)
-rounds = int_check("Rounds:", 1)
-guess = int_check("Guess: ", lowest, highest)
+
+def statement_generator(outcome, prize_decoration):
+
+    sides = prize_decoration * 3
+
+    outcome = "{} {} {}".format(sides, outcome, sides)
+    top_bottom = prize_decoration * len(outcome)
+
+    print(top_bottom)
+    print(outcome)
+    print(top_bottom)
+
+    return ""
+
+
+def start():
+    print()
+    print("lets get started")
+    print()
+    prize_decoration = "-"
+    return""
+
+
+statement_generator("Welcome to HIgher or lower", "*")
+print()
+
+played_before = yes_no("Have you played this game before? ")
+
+if played_before == "no":
+    instructions()
+
+if played_before == "yes":
+    start()
