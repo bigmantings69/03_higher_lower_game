@@ -1,7 +1,6 @@
 # HL component 1 - Get (and check) user input
 
-# Ask user if they have played before.
-
+# instruction for how to play the game
 
 def instructions():
     print()
@@ -15,22 +14,24 @@ def instructions():
     print()
     print("Good Luck!")
 
-# If 'yes', show instructions
+
+# ask user if they played this game before
+
+statement_generator("Welcome to HIgher or lower", "*")
+print()
+
+played_before = yes_no("Have you played this game before? ")
+
+# if no show instructions
+if played_before == "no":
+    instructions()
+
+## if yes continue
+if played_before == "yes":
+    start()
 
 
-def statement_generator(statement, decoration):
-
-    sides = decoration * 3
-
-    statement = "{} {} {}".format(sides, statement, sides)
-    top_bottom = decoration * len(statement)
-
-    print(top_bottom)
-    print(statement)
-    print(top_bottom)
-
-    return ""
-
+# no and yes answer for 'have you played this game before
 
 def yes_no(question):
     valid = False
@@ -47,6 +48,23 @@ def yes_no(question):
 
         else:
             print("please enter yes or no")
+
+
+# decorating the program
+
+
+def statement_generator(statement, decoration):
+
+    sides = decoration * 3
+
+    statement = "{} {} {}".format(sides, statement, sides)
+    top_bottom = decoration * len(statement)
+
+    print(top_bottom)
+    print(statement)
+    print(top_bottom)
+
+    return ""
 
 
 def statement_generator(outcome, prize_decoration):
@@ -69,15 +87,3 @@ def start():
     print()
     prize_decoration = "-"
     return""
-
-
-statement_generator("Welcome to HIgher or lower", "*")
-print()
-
-played_before = yes_no("Have you played this game before? ")
-
-if played_before == "no":
-    instructions()
-
-if played_before == "yes":
-    start()
