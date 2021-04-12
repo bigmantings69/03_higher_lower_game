@@ -87,3 +87,16 @@ def start():
     print()
     prize_decoration = "-"
     return""
+
+    
+rounds_played = 0
+
+play_again = input("press <Enter> to play...").lower()
+while play_again == "":
+
+    # increase # of rounds played
+    rounds_played += 1
+
+    # print round number
+    print()
+    print("*** Round #{} ***".format(rounds_played))
