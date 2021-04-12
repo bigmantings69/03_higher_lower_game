@@ -8,9 +8,7 @@ def instructions():
     print("**** How to Play ****")
     print()
     print("For each game you will be asked to...")
-    print("-Enter a 'low' and 'high' number. The computer will randomly "
-    "generate a  'secret' number between your two chosen numbers. It will use "
-    "these numbers for for all the rounds in a given game.")
+    print("-Enter a 'low' and 'high' number. The computer will randomly generate a 'secret' number between your two chosen numbers. It will use these numbers for for all the rounds in a given game.")
     print("- The computer will calculate how many guesses you are allowed")
     print("- enter the number of rounds you want to play")
     print("- guess the secret number")
