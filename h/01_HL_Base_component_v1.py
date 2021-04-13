@@ -1,13 +1,15 @@
-# HL component 1 - Get (and check) user input
+import random
 
-# instruction for how to play the game
 
+# instruction if user did not play the game before
 def instructions():
     print()
     print("**** How to Play ****")
     print()
     print("For each game you will be asked to...")
-    print("-Enter a 'low' and 'high' number. The computer will randomly generate a 'secret' number between your two chosen numbers. It will use these numbers for for all the rounds in a given game.")
+    print("- Enter a 'low' and 'high' number. "
+          "The computer will randomly generate a 'secret' number between your two chosen numbers."
+          " It will use these numbers for for all the rounds in a given game.")
     print("- The computer will calculate how many guesses you are allowed")
     print("- enter the number of rounds you want to play")
     print("- guess the secret number")
@@ -15,24 +17,22 @@ def instructions():
     print("Good Luck!")
 
 
-# ask user if they played this game before
+# decorating program to decorate the game
+def statement_generator(statement, decoration):
 
-statement_generator("Welcome to HIgher or lower", "*")
-print()
+    sides = decoration * 3
 
-played_before = yes_no("Have you played this game before? ")
+    statement = "{} {} {}".format(sides, statement, sides)
+    top_bottom = decoration * len(statement)
 
-# if no show instructions
-if played_before == "no":
-    instructions()
+    print(top_bottom)
+    print(statement)
+    print(top_bottom)
 
-## if yes continue
-if played_before == "yes":
-    start()
+    return ""
 
 
-# no and yes answer for 'have you played this game before
-
+# yes or no answer for the program
 def yes_no(question):
     valid = False
     while not valid:
@@ -50,37 +50,7 @@ def yes_no(question):
             print("please enter yes or no")
 
 
-# decorating the program
-
-
-def statement_generator(statement, decoration):
-
-    sides = decoration * 3
-
-    statement = "{} {} {}".format(sides, statement, sides)
-    top_bottom = decoration * len(statement)
-
-    print(top_bottom)
-    print(statement)
-    print(top_bottom)
-
-    return ""
-
-
-def statement_generator(outcome, prize_decoration):
-
-    sides = prize_decoration * 3
-
-    outcome = "{} {} {}".format(sides, outcome, sides)
-    top_bottom = prize_decoration * len(outcome)
-
-    print(top_bottom)
-    print(outcome)
-    print(top_bottom)
-
-    return ""
-
-
+# game intro... (do we need this)
 def start():
     print()
     print("lets get started")
@@ -88,15 +58,74 @@ def start():
     prize_decoration = "-"
     return""
 
-    
-rounds_played = 0
 
-play_again = input("press <Enter> to play...").lower()
-while play_again == "":
+def int_check(question, low=None, high=None):
 
-    # increase # of rounds played
-    rounds_played += 1
+    situation = ""
 
-    # print round number
-    print()
-    print("*** Round #{} ***".format(rounds_played))
+    if low is not None and high is not None:
+        situation = "both"
+    elif low is not None and high is None:
+        situation = "low only"
+
+    while True:
+
+        try:
+            response = int(input(question))
+
+            # check input is not too high or
+            # too low if a both upper and lower bounds
+            # are specified
+            if situation == "both":
+                if response < low or response > high:
+                    print("please enter a number between "
+                          "{} and {}".format(low, high))
+                    continue
+
+            # checks input is not too low
+            elif situation == "low only":
+                if response < low:
+                    print("Please enter a number that is more "
+                          "than (or equal to) {}".format(low))
+                    continue
+
+            return response
+
+        # checks input is a integer
+        except ValueError:
+            print("Please enter an integer")
+            continue
+
+
+# Main routine
+
+# Introduction
+statement_generator("Welcome to Higher or lower", "*")
+print()
+
+played_before = yes_no("Have you played this game before? ")
+
+if played_before == "no":
+    instructions()
+
+if played_before == "yes":
+    start()
+
+
+
+
+lowest = int_check("Low Number: ")
+highest = int_check("High Number: ", lowest + 1)
+rounds = int_check("Rounds: ", 1)
+max_guesses = 20
+
+# Game playing loop
+
+
+
+# increase # of rounds played
+rounds_played += 1
+
+# print round number
+print()
+print("*** Round #{} ***".format(rounds_played))
