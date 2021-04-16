@@ -1,4 +1,5 @@
 import math
+import random
 
 
 # instruction if user did not play the game before
@@ -21,22 +22,8 @@ def instructions():
 
 # decorating program to decorate the game
 
-def statement_generator(statement, decoration):
-
-    sides = decoration * 3
-
-    statement = "{} {} {}".format(sides, statement, sides)
-    top_bottom = decoration * len(statement)
-
-    print(top_bottom)
-    print(statement)
-    print(top_bottom)
-
-    return ""
 
 # yes or no answer for the program
-
-
 def yes_no(question):
     valid = False
     while not valid:
@@ -76,52 +63,6 @@ def start():
     return""
 
 
-# introduction for the game
-# ask if they have played this game before
-# if no show instructions
-# if yes continue
-
-statement_generator("Welcome to Higher or lower", "*")
-print()
-
-played_before = yes_no("Have you played this game before? ")
-
-if played_before == "no":
-    instructions()
-
-if played_before == "yes":
-    start()
-
-
-# ask user for # of rounds then loop...
-
-game_summary = []
-
-rounds_lost = 0
-rounds_drawn = 0
-rounds_played = 0
-
-
-# press enter to play the game
-play_again = input("press <Enter> to play...").lower()
-while play_again == "":
-
-    # increase # of rounds played
-    rounds_played += 1
-
-    # print round number
-    print()
-    print("*** Round #{} ***".format(rounds_played))
-
-
-# check a lowest is an integer (any integer)
-# check that highest is more than lowest (lower bound only)
-# check that rounds is more than 1 (upper bound only)
-# lower and upper bound
-
-
-# Number checking function goes here
-
 def int_check(question, low=None, high=None):
 
     situation = ""
@@ -159,79 +100,131 @@ def int_check(question, low=None, high=None):
             print("Please enter an integer")
             continue
 
+# introduction for the game
+# ask if they have played this game before
+# if no show instructions
+# if yes continue
 
-# Main routine
+statement_generator("Welcome to Higher or lower", "*")
+print()
+
+played_before = yes_no("Have you played this game before? ")
+
+if played_before == "no":
+    instructions()
+
+if played_before == "yes":
+    start()
+
+
+# ask user for # of rounds then loop...
+
+game_summary = []
+
+rounds_lost = 0
+rounds_drawn = 0
+rounds_played = 0
+
 
 lowest = int_check("Low Number: ")
 highest = int_check("High Number: ", lowest + 1)
 rounds = int_check("Rounds: ", 1)
-guess = int_check("Guess: ", lowest, highest)
 
-# increase # of rounds played
-rounds_played += 1
+num_range = highest - lowest + 1
+max_raw = math.log2(num_range)  # finds maximum # of guesses using
+max_upped = math.ceil(max_raw)  # rounds up (ceil ---> ceiling)
+max_guesses = max_upped + 1
+print("Max Guesses: {}".format(max_guesses))
 
-# print round number
-print()
-print("*** Round #{} ***".format(rounds_played))
 
-# HL component 11 - Maximum Guesses Calculator
+while rounds_played < rounds:
+    # increase # of rounds played
+    rounds_played += 1
 
-for item in range(0,4):     # loop component for easy testing.....
-
-    low = int(input("Low: "))  # use int check in due course
-    high = int(input("High: "))  # use int check in due course
-
-    range = high - low + 1
-    max_raw = math.log2(range)  # finds maximum # of guesses using
-    max_upped = math.ceil(max_raw)  # rounds up (ceil ---> ceiling)
-    max_guesses = max_upped + 1
-    print("Max Guesses: {}".format(max_guesses))
-
+    # print round number
     print()
+    print("*** Round #{} ***".format(rounds_played))
 
-# HL component 5 - prevents duplicate guesses
+    # HL component 11 - Maximum Guesses Calculator
 
-SECRET = 7
-GUESSES_ALLOWED = 5
+    secret = random.randint(lowest, highest)
+    GUESSES_ALLOWED = 5
 
-# list for guesses
-already_guessed = []
-guesses_left = GUESSES_ALLOWED
-num_won = 0
+    # list for guesses
+    already_guessed = []
+    guesses_left = GUESSES_ALLOWED
+    num_won = 0
 
-guess = ""
+    guess = ""
 
-while guess != SECRET and guesses_left >= 1:
+    while guess != secret and guesses_left >= 1:
 
-    guess = int(input("Guess: "))  # replace this with function
+        guess = int(input("Guess: "))  # replace this with function
 
-    # check that guess is not a duplicate
+        # check that guess is not a duplicate
 
-    if guess in already_guessed:
-        print("You already guessed that number! Please try again"
-              "you *still* have {} guesses left".format(guesses_left))
-        continue
+        if guess in already_guessed:
+            print("You already guessed that number! Please try again"
+                  "you *still* have {} guesses left".format(guesses_left))
+            continue
 
-    guesses_left -= 1
-    already_guessed.append(guess)
+        guesses_left -= 1
+        already_guessed.append(guess)
 
-    if guesses_left >= 1:
+        if guesses_left >= 1:
 
-        if guess < SECRET:
-            print("Too low, try a higher number. Guesses left: {}".format(guesses_left))
+            if guess < secret:
+                print("Too low, try a higher number. Guesses left: {}".format(guesses_left))
 
-        elif guess > SECRET:
-            print("Too high, try a lower number. Guesses left: {}".format(guesses_left))
-    else:
-        if guess < SECRET:
-            print("Too Low!")
-        elif guess > SECRET:
-            print("Too High!")
+            elif guess > secret:
+                print("Too high, try a lower number. Guesses left: {}".format(guesses_left))
+        else:
+            if guess < secret:
+                print("Too Low!")
+            elif guess > secret:
+                print("Too High!")
 
-if guess == SECRET:
-    if guesses_left == GUESSES_ALLOWED -1:
-        print("Amazing! You got it")
-    elif guess == SECRET:
-        print("Well done, you got it")
+    if guess == secret:
+        if guesses_left == GUESSES_ALLOWED -1:
+            print("Amazing! You got it")
+        elif guess == secret:
+            print("Well done, you got it")
 
+if guess and rounds_played:
+    round_result = "won"
+if guess and rounds_played:
+    round_result = "lost"
 
+game_summary.append(round_result)
+
+round_result = "Round {}: {}".format(rounds_played + 1, round_result)
+
+# Ask user if they want to see their game history.
+# If 'yes' show game game history
+
+# Show game statistics
+rounds_won = rounds_played - rounds_lost - rounds_drawn
+
+# **** Calculate Game Stats ****
+percent_win = rounds_won / rounds_played * 100
+percent_lose = rounds_lost / rounds_played * 100
+percent_tie = rounds_drawn / rounds_played * 100
+
+print()
+print("***** Game History *****")
+for game in game_summary:
+    print(game)
+
+print()
+
+# display game stats with % values to the nearest whole number
+print("******* Game statistics *******")
+print("Win: {}, ({:.0f}%)\nLoss: {}, "
+      "({:.0f}%)\nTie: {}, ({:.0f}%)".format(rounds_won,
+                                             percent_win,
+                                             rounds_lost,
+                                             percent_lose,
+                                             rounds_drawn,
+                                             percent_tie))
+print()
+print("Thanks for playing")
